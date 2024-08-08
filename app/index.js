@@ -4,11 +4,16 @@ import { fetchUsers } from "./api/api";
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { UserDetail } from "./components/UserDetail";
+import { ActivityIndicator } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "expo-router";
 
 export default function Page() {
+  const nav = useNavigation();
   const [users, setUsers] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const nextUser = () => {
     if (currentIndex < users.length - 1) {
@@ -29,31 +34,37 @@ export default function Page() {
       if (fetchedUsers) {
         setUsers(fetchedUsers);
       } else {
-        setUsers(null);
+        setError(true);
       }
     };
     getUsers();
   }, []);
 
-  if (users === null) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.error}>Network Error</Text>
-      </View>
-    );
-  }
+  useEffect(() => {
+    if (error) {
+      nav.replace("NetworkError");
+    }
+  }, [error, nav]);
 
   if (users.length === 0) {
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <LinearGradient
+          colors={["rgb(231, 188, 145)", "rgb(255, 237, 216)"]}
+          style={styles.background}
+        />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="rgb(88, 49, 1)" />
+          <Text style={styles.loadingText}>Loading...</Text>
+        </View>
       </View>
     );
   }
+
   const user = users[currentIndex];
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <LinearGradient
         colors={["rgb(231, 188, 145)", "rgb(255, 237, 216)"]}
         style={styles.background}
@@ -107,14 +118,12 @@ export default function Page() {
         <TouchableOpacity
           style={styles.button}
           onPress={nextUser}
-          disabled={currentIndex == users.length}
+          disabled={currentIndex === users.length - 1}
         >
-          <Text style={styles.buttonText} disabled={currentIndex == 79}>
-            Next User
-          </Text>
+          <Text style={styles.buttonText}>Next User</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -122,6 +131,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
     padding: 25,
     backgroundColor: "rgb(244, 223, 200)",
   },
