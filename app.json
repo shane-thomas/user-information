@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "user-information",
+    "scheme":"user-information",
     "slug": "user-information",
     "version": "1.0.0",
     "orientation": "portrait",
