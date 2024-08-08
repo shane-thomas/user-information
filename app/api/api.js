@@ -10,5 +10,6 @@ export const fetchUsers = async () => {
     return data;
   } catch (error) {
     console.log("\nFailed to fetch users because of error -", error.message);
+    return null;
   }
 };
