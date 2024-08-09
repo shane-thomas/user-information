@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "user-information",
-    "scheme":"user-information",
+    "scheme": "user-information",
     "slug": "user-information",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,10 +19,22 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dorororro.userinformation"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9764abe6-326d-4cbf-a563-3d9b26e988cb"
+      }
     }
   }
 }
